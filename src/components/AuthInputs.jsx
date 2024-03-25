@@ -1,12 +1,21 @@
-import { useState } from 'react';
+import { useState } from "react";
+import {
+  Action,
+  AuthInputStyled,
+  Button,
+  ButtonText,
+  Control,
+  Input,
+  Label,
+} from "./styles/AuthInput.styles";
 
 export default function AuthInputs() {
-  const [enteredEmail, setEnteredEmail] = useState('');
-  const [enteredPassword, setEnteredPassword] = useState('');
+  const [enteredEmail, setEnteredEmail] = useState("");
+  const [enteredPassword, setEnteredPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   function handleInputChange(identifier, value) {
-    if (identifier === 'email') {
+    if (identifier === "email") {
       setEnteredEmail(value);
     } else {
       setEnteredPassword(value);
@@ -17,37 +26,40 @@ export default function AuthInputs() {
     setSubmitted(true);
   }
 
-  const emailNotValid = submitted && !enteredEmail.includes('@');
+  const emailNotValid = submitted && !enteredEmail.includes("@");
   const passwordNotValid = submitted && enteredPassword.trim().length < 6;
 
   return (
-    <div id="auth-inputs">
-      <div className="controls">
+    <AuthInputStyled>
+      <Control>
         <p>
-          <label>Email</label>
-          <input
+          {/* Using $ sign because 'invalid' is a built in prop. Prefixing with $ makes the warning go away */}
+          <Label $invalid={emailNotValid}>Email</Label>
+          <Input
+            $invalid={emailNotValid}
             type="email"
-            className={emailNotValid ? 'invalid' : undefined}
-            onChange={(event) => handleInputChange('email', event.target.value)}
+            onChange={(event) => handleInputChange("email", event.target.value)}
           />
         </p>
         <p>
-          <label>Password</label>
-          <input
+          <Label $invalid={passwordNotValid}>Password</Label>
+          <Input
             type="password"
-            className={passwordNotValid ? 'invalid' : undefined}
+            $invalid={passwordNotValid}
             onChange={(event) =>
-              handleInputChange('password', event.target.value)
+              handleInputChange("password", event.target.value)
             }
           />
         </p>
-      </div>
-      <div className="actions">
-        <button type="button" className="text-button">
+      </Control>
+      <Action className="actions">
+        <ButtonText type="button" className="text-button">
           Create a new account
-        </button>
-        <button className='button' onClick={handleLogin}>Sign In</button>
-      </div>
-    </div>
+        </ButtonText>
+        <Button className="button" onClick={handleLogin}>
+          Sign In
+        </Button>
+      </Action>
+    </AuthInputStyled>
   );
 }
